@@ -1,0 +1,415 @@
+{
+	"flow_name" : "hotel",
+	"steps" : [
+		{
+			"class" : "weka.knowledgeflow.steps.Loader",
+			"properties" : {
+				"loader" : {
+					"type" : "loader",
+					"class" : "weka.core.converters.ArffLoader",
+					"filePath" : "/home/besu/Downloads/hotel_booking3.arff",
+					"useRelativePath" : false
+				},
+				"name" : "ArffLoader"
+			},
+			"connections" : {
+				"dataSet" : [
+					"ClassAssigner",
+					"TextViewer2"
+				]
+			},
+			"coordinates" : "81,408"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.ClassAssigner",
+			"properties" : {
+				"classColumn" : "hotel",
+				"name" : "ClassAssigner"
+			},
+			"connections" : {
+				"dataSet" : [
+					"CrossValidationFoldMaker"
+				]
+			},
+			"coordinates" : "251,412"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.CrossValidationFoldMaker",
+			"properties" : {
+				"name" : "CrossValidationFoldMaker",
+				"numFolds" : "10",
+				"preserveOrder" : false,
+				"seed" : "1"
+			},
+			"connections" : {
+				"trainingSet" : [
+					"NaiveBayes",
+					"J48",
+					"RandomTree",
+					"RandomForest"
+				],
+				"testSet" : [
+					"NaiveBayes",
+					"J48",
+					"RandomTree",
+					"RandomForest"
+				]
+			},
+			"coordinates" : "454,414"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.ClassifierPerformanceEvaluator",
+			"properties" : {
+				"collectPredictionsForVisAndAUC" : true,
+				"costMatrixString" : "",
+				"errorPlotPointSizeProportionalToMargin" : false,
+				"evaluateWithRespectToCosts" : false,
+				"evaluationMetricsToOutput" : "Correct,Incorrect,Kappa,Total cost,Average cost,KB relative,KB information,Correlation,Complexity 0,Complexity scheme,Complexity improvement,MAE,RMSE,RAE,RRSE,TP rate,FP rate,Precision,Recall,F-measure,MCC,ROC area,PRC area",
+				"name" : "ClassifierPerformanceEvaluator",
+				"outputConfusionMatrix" : true,
+				"outputEntropyMetrics" : false,
+				"outputPerClassStats" : true
+			},
+			"connections" : {
+				"visualizableError" : [
+					"ModelPerformanceChart"
+				],
+				"text" : [
+					"TextViewer"
+				]
+			},
+			"coordinates" : "1044,165"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.ModelPerformanceChart",
+			"properties" : {
+				"name" : "ModelPerformanceChart",
+				"offscreenAdditionalOpts" : "",
+				"offscreenHeight" : "400",
+				"offscreenRendererName" : "Weka Chart Renderer",
+				"offscreenWidth" : "500",
+				"offscreenXAxis" : "",
+				"offscreenYAxis" : ""
+			},
+			"connections" : {
+			},
+			"coordinates" : "1210,122"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.Classifier",
+			"properties" : {
+				"classifier" : {
+					"type" : "optionHandler",
+					"class" : "weka.classifiers.bayes.NaiveBayes",
+					"options" : "-num-decimal-places 4"
+				},
+				"loadClassifierFileName" : "",
+				"name" : "NaiveBayes",
+				"resetIncrementalClassifier" : false,
+				"updateIncrementalClassifier" : true
+			},
+			"connections" : {
+				"batchClassifier" : [
+					"ClassifierPerformanceEvaluator"
+				]
+			},
+			"coordinates" : "697,162"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.Note",
+			"properties" : {
+				"name" : "Note",
+				"noteText" : "Tai du lieu"
+			},
+			"connections" : {
+			},
+			"coordinates" : "116,78"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.Note",
+			"properties" : {
+				"name" : "Note2",
+				"noteText" : "Chon bien 'hotel'"
+			},
+			"connections" : {
+			},
+			"coordinates" : "275,79"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.Note",
+			"properties" : {
+				"name" : "Note3",
+				"noteText" : "Chia bo du lieu thanh train va test"
+			},
+			"connections" : {
+			},
+			"coordinates" : "432,81"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.Note",
+			"properties" : {
+				"name" : "Note4",
+				"noteText" : "Chon thuat toan "
+			},
+			"connections" : {
+			},
+			"coordinates" : "673,84"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.Note",
+			"properties" : {
+				"name" : "Note5",
+				"noteText" : "Danh gia hieu suat"
+			},
+			"connections" : {
+			},
+			"coordinates" : "1012,86"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.Note",
+			"properties" : {
+				"name" : "Note6",
+				"noteText" : "Ket qua danh gia"
+			},
+			"connections" : {
+			},
+			"coordinates" : "1456,93"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.Note",
+			"properties" : {
+				"name" : "Note7",
+				"noteText" : "Hien thi bieu do va diem phan loai sai"
+			},
+			"connections" : {
+			},
+			"coordinates" : "1164,90"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.Classifier",
+			"properties" : {
+				"classifier" : {
+					"type" : "optionHandler",
+					"class" : "weka.classifiers.trees.J48",
+					"options" : "-C 0.25 -M 2"
+				},
+				"loadClassifierFileName" : "",
+				"name" : "J48",
+				"resetIncrementalClassifier" : false,
+				"updateIncrementalClassifier" : true
+			},
+			"connections" : {
+				"batchClassifier" : [
+					"ClassifierPerformanceEvaluator2"
+				],
+				"graph" : [
+					"GraphViewer2"
+				]
+			},
+			"coordinates" : "696,364"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.Classifier",
+			"properties" : {
+				"classifier" : {
+					"type" : "optionHandler",
+					"class" : "weka.classifiers.trees.RandomTree",
+					"options" : "-K 0 -M 1.0 -V 0.001 -S 1"
+				},
+				"loadClassifierFileName" : "",
+				"name" : "RandomTree",
+				"resetIncrementalClassifier" : false,
+				"updateIncrementalClassifier" : true
+			},
+			"connections" : {
+				"batchClassifier" : [
+					"ClassifierPerformanceEvaluator3"
+				],
+				"graph" : [
+					"GraphViewer"
+				]
+			},
+			"coordinates" : "709,589"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.ClassifierPerformanceEvaluator",
+			"properties" : {
+				"collectPredictionsForVisAndAUC" : true,
+				"costMatrixString" : "",
+				"errorPlotPointSizeProportionalToMargin" : false,
+				"evaluateWithRespectToCosts" : false,
+				"evaluationMetricsToOutput" : "Correct,Incorrect,Kappa,Total cost,Average cost,KB relative,KB information,Correlation,Complexity 0,Complexity scheme,Complexity improvement,MAE,RMSE,RAE,RRSE,TP rate,FP rate,Precision,Recall,F-measure,MCC,ROC area,PRC area",
+				"name" : "ClassifierPerformanceEvaluator2",
+				"outputConfusionMatrix" : true,
+				"outputEntropyMetrics" : false,
+				"outputPerClassStats" : true
+			},
+			"connections" : {
+				"visualizableError" : [
+					"ModelPerformanceChart2"
+				],
+				"text" : [
+					"TextViewer"
+				]
+			},
+			"coordinates" : "1030,364"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.ModelPerformanceChart",
+			"properties" : {
+				"name" : "ModelPerformanceChart2",
+				"offscreenAdditionalOpts" : "",
+				"offscreenHeight" : "400",
+				"offscreenRendererName" : "Weka Chart Renderer",
+				"offscreenWidth" : "500",
+				"offscreenXAxis" : "",
+				"offscreenYAxis" : ""
+			},
+			"connections" : {
+			},
+			"coordinates" : "1204,298"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.ModelPerformanceChart",
+			"properties" : {
+				"name" : "ModelPerformanceChart3",
+				"offscreenAdditionalOpts" : "",
+				"offscreenHeight" : "400",
+				"offscreenRendererName" : "Weka Chart Renderer",
+				"offscreenWidth" : "500",
+				"offscreenXAxis" : "",
+				"offscreenYAxis" : ""
+			},
+			"connections" : {
+			},
+			"coordinates" : "1196,591"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.ClassifierPerformanceEvaluator",
+			"properties" : {
+				"collectPredictionsForVisAndAUC" : true,
+				"costMatrixString" : "",
+				"errorPlotPointSizeProportionalToMargin" : false,
+				"evaluateWithRespectToCosts" : false,
+				"evaluationMetricsToOutput" : "Correct,Incorrect,Kappa,Total cost,Average cost,KB relative,KB information,Correlation,Complexity 0,Complexity scheme,Complexity improvement,MAE,RMSE,RAE,RRSE,TP rate,FP rate,Precision,Recall,F-measure,MCC,ROC area,PRC area",
+				"name" : "ClassifierPerformanceEvaluator3",
+				"outputConfusionMatrix" : true,
+				"outputEntropyMetrics" : false,
+				"outputPerClassStats" : true
+			},
+			"connections" : {
+				"visualizableError" : [
+					"ModelPerformanceChart3"
+				],
+				"text" : [
+					"TextViewer"
+				]
+			},
+			"coordinates" : "1038,586"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.GraphViewer",
+			"properties" : {
+				"name" : "GraphViewer"
+			},
+			"connections" : {
+			},
+			"coordinates" : "888,488"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.GraphViewer",
+			"properties" : {
+				"name" : "GraphViewer2"
+			},
+			"connections" : {
+			},
+			"coordinates" : "878,289"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.Note",
+			"properties" : {
+				"name" : "Note8",
+				"noteText" : "Ve cay"
+			},
+			"connections" : {
+			},
+			"coordinates" : "888,89"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.TextViewer",
+			"properties" : {
+				"name" : "TextViewer"
+			},
+			"connections" : {
+			},
+			"coordinates" : "1513,464"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.TextViewer",
+			"properties" : {
+				"name" : "TextViewer2"
+			},
+			"connections" : {
+			},
+			"coordinates" : "81,559"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.Classifier",
+			"properties" : {
+				"classifier" : {
+					"type" : "optionHandler",
+					"class" : "weka.classifiers.trees.RandomForest",
+					"options" : "-P 100 -I 100 -num-slots 1 -K 0 -M 1.0 -V 0.001 -S 1"
+				},
+				"loadClassifierFileName" : "",
+				"name" : "RandomForest",
+				"resetIncrementalClassifier" : false,
+				"updateIncrementalClassifier" : true
+			},
+			"connections" : {
+				"batchClassifier" : [
+					"ClassifierPerformanceEvaluator4"
+				]
+			},
+			"coordinates" : "711,764"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.ClassifierPerformanceEvaluator",
+			"properties" : {
+				"collectPredictionsForVisAndAUC" : true,
+				"costMatrixString" : "",
+				"errorPlotPointSizeProportionalToMargin" : false,
+				"evaluateWithRespectToCosts" : false,
+				"evaluationMetricsToOutput" : "Correct,Incorrect,Kappa,Total cost,Average cost,KB relative,KB information,Correlation,Complexity 0,Complexity scheme,Complexity improvement,MAE,RMSE,RAE,RRSE,TP rate,FP rate,Precision,Recall,F-measure,MCC,ROC area,PRC area",
+				"name" : "ClassifierPerformanceEvaluator4",
+				"outputConfusionMatrix" : true,
+				"outputEntropyMetrics" : false,
+				"outputPerClassStats" : true
+			},
+			"connections" : {
+				"text" : [
+					"TextViewer"
+				],
+				"visualizableError" : [
+					"ModelPerformanceChart4"
+				]
+			},
+			"coordinates" : "1042,768"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.ModelPerformanceChart",
+			"properties" : {
+				"name" : "ModelPerformanceChart4",
+				"offscreenAdditionalOpts" : "",
+				"offscreenHeight" : "400",
+				"offscreenRendererName" : "Weka Chart Renderer",
+				"offscreenWidth" : "500",
+				"offscreenXAxis" : "",
+				"offscreenYAxis" : ""
+			},
+			"connections" : {
+			},
+			"coordinates" : "1208,763"
+		}
+	]
+}

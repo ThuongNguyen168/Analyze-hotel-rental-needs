@@ -1,0 +1,42 @@
+{
+	"flow_name" : "arff_to_csv",
+	"steps" : [
+		{
+			"class" : "weka.knowledgeflow.steps.Loader",
+			"properties" : {
+				"loader" : {
+					"type" : "loader",
+					"class" : "weka.core.converters.ArffLoader",
+					"filePath" : "/home/trivi/Downloads/hotel_booking3.arff",
+					"useRelativePath" : false
+				},
+				"name" : "ArffLoader"
+			},
+			"connections" : {
+				"instance" : [
+					"CSVSaver"
+				]
+			},
+			"coordinates" : "188,217"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.Saver",
+			"properties" : {
+				"name" : "CSVSaver",
+				"relationNameForFilename" : true,
+				"saver" : {
+					"type" : "saver",
+					"class" : "weka.core.converters.CSVSaver",
+					"filePath" : "",
+					"dir" : "/home/trivi/Downloads/weka",
+					"prefix" : "",
+					"useRelativePath" : false,
+					"options" : "-F , -M ? -decimal 6"
+				}
+			},
+			"connections" : {
+			},
+			"coordinates" : "581,220"
+		}
+	]
+}
